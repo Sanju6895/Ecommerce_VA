@@ -10,7 +10,8 @@ from django.urls import reverse
 
 from store.models import Category, Product
 
-from .views import all_products
+from .views import product_all
+
 
 
 class TestCategoryModel(TestCase):
@@ -76,17 +77,17 @@ class TestViewResponse(TestCase):
 
     def test_homepage_url(self):
         request = HttpRequest()
-        response = all_products(request)
+        response = product_all(request)
         html = response.content.decode('utf8')
-        self.assertIn('<title>Home</title>', html)
+        self.assertIn('<title>BookStore</title>', html)
         self.assertTrue(html.startswith('\n<!DOCTYPE html>\n'))
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
         
     def test_view_function(self):
-        request = self.factory.get('/item/django-beginners')
-        response = all_products(request)
+        request = self.factory.get('/django-beginners')
+        response = product_all(request)
         html = response.content.decode('utf8')
-        self.assertIn('<title>Home</title>', html)
+        self.assertIn('<title>BookStore</title>', html)
         self.assertTrue(html.startswith('\n<!DOCTYPE html>\n'))
         self.assertEqual(response.status_code, HTTPStatus.OK)
