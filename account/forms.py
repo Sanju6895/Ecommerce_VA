@@ -13,3 +13,35 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = UserBase
         fields = ('user_name', 'email',)
+
+    def clean_username(self):
+        user_name = self.cleaned_data['user_name'].lower()
+        r = UserBase.objects.filter(user_name=user_name)
+        if r.count():
+            raise forms.ValidationError("Username already exists")
+        return user_name
+
+    def clean_passwrod2(self):
+        userdata = self.cleaned_data
+        if userdata['password'] != userdata['password2']:
+            raise forms.ValidationError("Passwords don't match.")
+        return userdata['password2']
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if UserBase.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                'Please use another Email, that is already taken')
+        return email
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user_name'].widget.attrs.update(
+            {'class': 'form-control mb-3', 'placeholder': 'Username'})
+        self.fields['email'].widget.attrs.update(
+            {'class': 'form-control mb-3', 'placeholder': 'E-mail', 'name': 'email', 'id': 'id_email'})
+        self.fields['password'].widget.attrs.update(
+            {'class': 'form-control mb-3', 'placeholder': 'Password'})
+        self.fields['password2'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Repeat Password'})

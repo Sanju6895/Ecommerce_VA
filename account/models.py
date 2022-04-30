@@ -49,7 +49,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     about = models.TextField(_(
         'about'), max_length=500, blank=True)
     # Delivery details
-    # country = CountryField()
+    country = CountryField(blank=True)
     # phone_number = models.CharField(max_length=15, blank=True)
     # postcode = models.CharField(max_length=12, blank=True)
     # address_line_1 = models.CharField(max_length=150, blank=True)
