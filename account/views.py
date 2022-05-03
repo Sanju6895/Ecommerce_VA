@@ -9,7 +9,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from .models import UserBase
-
+from orders.views import user_orders
 
 def account_register(request):
 
@@ -59,12 +59,6 @@ def account_activate(request, uidb64, token):
     else:
         return render(request, 'account/activation_invalid.html')
 
-
-@login_required
-def dashboard(request):
-    return render(request, 'account/dashboard.html')
-
-
 @login_required
 def edit_details(request):
     if request.method == 'POST':
@@ -86,3 +80,10 @@ def delete_user(request):
     logout(request)
     return redirect('account:delete_confirmation')
     
+
+@login_required
+def dashboard(request):
+    orders = user_orders(request)
+    return render(request,
+                  'account/dashboard.html',
+                  {'section': 'profile', 'orders': orders})

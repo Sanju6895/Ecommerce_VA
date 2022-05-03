@@ -25,7 +25,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'account',
     'django_countries',
     'payment',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -135,6 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media/')
 
+BASKET_SESSION_ID = 'basket'
 
 AUTH_USER_MODEL = 'account.UserBase'
 LOGIN_REDIRECT_URL = '/account/dashboard'
@@ -144,3 +147,7 @@ LOGIN_URL = '/account/login'
 PASSWORD_RESET_TIMEOUT_DAYS = 2 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+STRIPE_ENDPOINT_SECRET = 'whsec_1179d80727a5b140e66f0d7d0db46b09be5a053a02a89b9d6988d25018ddab24'
+PUBLISHABLE_KEY =''
+STRIPE_SECRET_KEY =''

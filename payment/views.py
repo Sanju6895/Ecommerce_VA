@@ -1,10 +1,17 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-# Create your views here.
-from basket.basket import Basket
+import json
 import os
 
 import stripe
+from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import TemplateView
+from django.conf import settings
+
+from basket.basket import Basket
+from orders.views import payment_confirmation
+
 
 @login_required
 def BasketView(request):
@@ -22,7 +29,7 @@ def BasketView(request):
     #     description="Software development services",
     # )
 
-
+    print('Execute Stripe Intent')
     intent = stripe.PaymentIntent.create(
         description="Software development services",
         shipping={
@@ -41,4 +48,37 @@ def BasketView(request):
     )
 
     context = {'client_secret': intent.client_secret}
-    return render(request, 'payment/home.html', context) 
+    return render(request, 'payment/home.html', context)
+
+def order_placed(request):
+    basket = Basket(request)
+    basket.clear()
+    return render(request, 'payment/orderplaced.html')
+
+
+# class Error(TemplateView):
+#     template_name = 'payment/error.html' 
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    event = None
+
+    try:
+        event = stripe.Event.construct_from(
+            json.loads(payload), stripe.api_key
+        )
+    except ValueError as e:
+        print(e)
+        return HttpResponse(status=400)
+
+    print('execute stripe_webhook')
+    # Handle the event
+    if event.type == 'payment_intent.succeeded':
+        payment_confirmation(event.data.object.client_secret)
+
+    else:
+        print('Unhandled event type {}'.format(event.type))
+
+    return HttpResponse(status=200)

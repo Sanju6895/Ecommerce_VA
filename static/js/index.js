@@ -39,16 +39,16 @@ var custAdd2 = document.getElementById("custAdd2").value;
 var postCode = document.getElementById("postCode").value;
 
 
-//   $.ajax({
-//     type: "POST",
-//     url: 'http://127.0.0.1:8000/orders/add/',
-//     data: {
-//       order_key: clientsecret,
-//       csrfmiddlewaretoken: CSRF_TOKEN,
-//       action: "post",
-//     },
-//     success: function (json) {
-//       console.log(json.success)
+  $.ajax({
+    type: "POST",
+    url: 'http://127.0.0.1:8000/orders/add/',
+    data: {
+      order_key: clientsecret,
+      csrfmiddlewaretoken: CSRF_TOKEN,
+      action: "post",
+    },
+    success: function (json) {
+      console.log(json.success)
 
       stripe.confirmCardPayment(clientsecret, {
         payment_method: {
@@ -68,17 +68,17 @@ var postCode = document.getElementById("postCode").value;
         } else {
           if (result.paymentIntent.status === 'succeeded') {
             console.log('payment processed')
-//             // There's a risk of the customer closing the window before callback
-//             // execution. Set up a webhook or plugin to listen for the
-//             // payment_intent.succeeded event that handles any business critical
-//             // post-payment actions.
+            // There's a risk of the customer closing the window before callback
+            // execution. Set up a webhook or plugin to listen for the
+            // payment_intent.succeeded event that handles any business critical
+            // post-payment actions.
             window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
           }
         }
       });
 
-//     },
-//     error: function (xhr, errmsg, err) {},
-//   });
+    },
+    error: function (xhr, errmsg, err) {},
+  });
 
 });
