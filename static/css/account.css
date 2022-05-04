@@ -1,0 +1,29 @@
+.account-form input {
+    border: 2px solid #ccc;
+    height: calc(2em + .75rem + 2px);
+  }
+  
+  .account-form input:focus {
+    border-color: #1497ff;
+    box-shadow: none;
+  }
+
+  .login,
+  .image {
+      min-height: 100vh;
+  }
+
+  .bg-image {
+      background-image: url('https://images.pexels.com/photos/1907784/pexels-photo-1907784.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+      background-size: cover;
+      background-position: center center;
+  }
+
+  .container-fluid {
+      max-width: 100%;
+  }
+
+  body {
+      margin-bottom: 0px;
+  }
+

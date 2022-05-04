@@ -36,12 +36,10 @@ def account_register(request):
             })
             print(message)
             #user.email_user(subject=subject, message=message)
-            return HttpResponse('Account Created, Activation Code Sent on Email')
-
+            return render(request, 'account/register_email_confirm.html', {'form': registerForm})
     else:
         registerForm = RegistrationForm()
-    context = {'form': registerForm}    
-    return render(request, 'account/register.html', context)
+    return render(request, 'account/register.html', {'form': registerForm})
 
 
 def account_activate(request, uidb64, token):
