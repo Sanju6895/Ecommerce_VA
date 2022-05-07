@@ -6,25 +6,22 @@ from .models import Category, Product
 
 
 def product_all(request):
-    products = Product.products.all()
+    products = Product.objects.prefetch_related("product_image").filter(is_active=True)
 
-    context = {
-        'products':products
-    }
-    return render(request, 'store/home.html',context)
+    context = {"products": products}
+    return render(request, "store/home.html", context)
+
 
 def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug, in_stock=True)
-    context = {
-        'product':product
-    }
-    return render(request, 'store/product_detail.html',context)
+    product = get_object_or_404(Product, slug=slug, is_active=True)
+    context = {"product": product}
+    return render(request, "store/product_detail.html", context)
 
-def category_list(request, category_slug):
+
+def category_list(request, category_slug= None):
     category = get_object_or_404(Category, slug=category_slug)
-    products = Product.products.filter(category=category)
-    context={
-        'category':category,
-        'products':products
-    }
-    return render(request, 'store/category.html',context)
+    products = Product.objects.filter(
+        category__in=Category.objects.get(name=category_slug).get_descendants(include_self=True)
+    )
+    context = {"category": category, "products": products}
+    return render(request, "store/category.html", context)

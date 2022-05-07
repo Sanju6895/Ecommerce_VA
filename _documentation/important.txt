@@ -1,0 +1,12 @@
+We can have multiple settings.py type of files for various env like
+dev and prod.
+
+To do this we make a new folder in core app (For this project as its the main one)
+as settings and make it a package __init__.py
+
+Next we put all different config.seetings.py files as per perference.
+
+Once we do this we have to make changes in to place;
+manage.py and the seetings file's BASE_DIR
+In manage.py change the os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.THIS_WILL_BE_NEW_SETTINGS.py_FILE")
+and in THIS_WILL_BE_NEW_SETTINGS.py file change BASE_DIR to go up one more parent
