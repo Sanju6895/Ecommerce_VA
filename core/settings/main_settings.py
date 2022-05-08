@@ -42,9 +42,9 @@ INSTALLED_APPS = [
     "basket",
     "account",
     "django_countries",
-    "payment",
     "orders",
     "mptt",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -149,6 +149,6 @@ PASSWORD_RESET_TIMEOUT_DAYS = 2
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-STRIPE_ENDPOINT_SECRET = os.environ.get("STRIPE_ENDPOINT_SECRET")
-STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
-STRIPE_SECRET_KEY = ""
+# STRIPE_ENDPOINT_SECRET = os.environ.get("STRIPE_ENDPOINT_SECRET")
+# STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
+# STRIPE_SECRET_KEY = ""
